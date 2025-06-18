@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Heart, MessageSquare, Eye, Clock, ArrowLeft, Share2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { TrendingWidget } from '@/components/widgets/TrendingWidget';
+import { SportsWidget } from '@/components/widgets/SportsWidget';
+import { GoldStockWidget } from '@/components/widgets/GoldStockWidget';
 
 const NewsDetail = () => {
   const { id } = useParams();
@@ -111,178 +113,198 @@ const NewsDetail = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      {/* Back Button */}
-      <Link to="/" className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800">
-        <ArrowLeft className="h-4 w-4" />
-        <span>Back to News</span>
-      </Link>
+    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+      {/* Main Content */}
+      <div className="lg:col-span-3 space-y-8">
+        {/* Back Button */}
+        <Link to="/" className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to News</span>
+        </Link>
 
-      {/* Main Article */}
-      <article className="space-y-6">
-        {/* Hero Image */}
-        <div className="relative">
-          <img 
-            src={newsPost.image} 
-            alt={newsPost.title}
-            className="w-full h-64 md:h-96 object-cover rounded-lg"
-          />
-          <Badge className="absolute top-4 left-4 bg-blue-600 text-white">
-            {newsPost.district}
-          </Badge>
-        </div>
-
-        {/* Article Header */}
-        <div className="space-y-4">
-          <div className="flex flex-wrap gap-2">
-            {newsPost.tags.map((tag) => (
-              <Badge key={tag} variant="outline">
-                {tag}
-              </Badge>
-            ))}
+        {/* Main Article */}
+        <article className="space-y-6">
+          {/* Hero Image */}
+          <div className="relative">
+            <img 
+              src={newsPost.image} 
+              alt={newsPost.title}
+              className="w-full h-64 md:h-96 object-cover rounded-lg"
+            />
+            <Badge className="absolute top-4 left-4 bg-blue-600 text-white">
+              {newsPost.district}
+            </Badge>
           </div>
-          
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-            {newsPost.title}
-          </h1>
-          
-          <div className="flex items-center justify-between text-sm text-gray-500">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-1">
-                <Clock className="h-4 w-4" />
-                <span>{formatDate(newsPost.publishedAt)}</span>
-              </div>
-              <span>By {newsPost.author}</span>
+
+          {/* Article Header */}
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {newsPost.tags.map((tag) => (
+                <Badge key={tag} variant="outline">
+                  {tag}
+                </Badge>
+              ))}
             </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-1">
-                <Eye className="h-4 w-4" />
-                <span>{newsPost.views}</span>
-              </div>
-              <Button variant="ghost" size="sm">
-                <Share2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Article Content */}
-        <div 
-          className="prose prose-lg max-w-none"
-          dangerouslySetInnerHTML={{ __html: newsPost.content }}
-        />
-
-        {/* Engagement Actions */}
-        <div className="flex items-center justify-between border-t border-b py-4">
-          <div className="flex items-center space-x-6">
-            <button
-              onClick={handleLike}
-              className={`flex items-center space-x-2 ${
-                user ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
-              } ${isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}
-              disabled={!user}
-            >
-              <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
-              <span>{newsPost.likes + (isLiked ? 1 : 0)}</span>
-            </button>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              {newsPost.title}
+            </h1>
             
-            <div className="flex items-center space-x-2 text-gray-500">
-              <MessageSquare className="h-5 w-5" />
-              <span>{comments.length}</span>
-            </div>
-          </div>
-
-          {!user && (
-            <Link to="/login">
-              <Button>Login to Like & Comment</Button>
-            </Link>
-          )}
-        </div>
-      </article>
-
-      {/* Comments Section */}
-      <section className="space-y-6">
-        <h2 className="text-2xl font-bold">Comments ({comments.length})</h2>
-        
-        {/* Add Comment */}
-        {user ? (
-          <Card>
-            <CardContent className="p-4">
-              <div className="space-y-4">
-                <Textarea
-                  placeholder="Share your thoughts..."
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  rows={3}
-                />
-                <Button onClick={handleComment} disabled={!commentText.trim()}>
-                  Post Comment
+            <div className="flex items-center justify-between text-sm text-gray-500">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-1">
+                  <Clock className="h-4 w-4" />
+                  <span>{formatDate(newsPost.publishedAt)}</span>
+                </div>
+                <span>By {newsPost.author}</span>
+              </div>
+              
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-1">
+                  <Eye className="h-4 w-4" />
+                  <span>{newsPost.views}</span>
+                </div>
+                <Button variant="ghost" size="sm">
+                  <Share2 className="h-4 w-4" />
                 </Button>
               </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card className="bg-gray-50">
-            <CardContent className="p-4 text-center">
-              <p className="text-gray-600 mb-4">Join the conversation!</p>
-              <Link to="/login">
-                <Button>Login to Comment</Button>
-              </Link>
-            </CardContent>
-          </Card>
-        )}
+            </div>
+          </div>
 
-        {/* Comments List */}
-        <div className="space-y-4">
-          {comments.map((comment) => (
-            <Card key={comment.id}>
+          {/* Article Content */}
+          <div 
+            className="prose prose-lg max-w-none"
+            dangerouslySetInnerHTML={{ __html: newsPost.content }}
+          />
+
+          {/* Engagement Actions */}
+          <div className="flex items-center justify-between border-t border-b py-4">
+            <div className="flex items-center space-x-6">
+              <button
+                onClick={handleLike}
+                className={`flex items-center space-x-2 ${
+                  user ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+                } ${isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}
+                disabled={!user}
+              >
+                <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
+                <span>{newsPost.likes + (isLiked ? 1 : 0)}</span>
+              </button>
+              
+              <div className="flex items-center space-x-2 text-gray-500">
+                <MessageSquare className="h-5 w-5" />
+                <span>{comments.length}</span>
+              </div>
+            </div>
+
+            {!user && (
+              <Link to="/login">
+                <Button>Login to Like & Comment</Button>
+              </Link>
+            )}
+          </div>
+        </article>
+
+        {/* Comments Section */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold">Comments ({comments.length})</h2>
+          
+          {/* Add Comment */}
+          {user ? (
+            <Card>
               <CardContent className="p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-semibold">{comment.author}</h4>
-                  <span className="text-sm text-gray-500">
-                    {formatDate(comment.timestamp)}
-                  </span>
-                </div>
-                <p className="text-gray-700 mb-2">{comment.content}</p>
-                <div className="flex items-center space-x-2 text-sm text-gray-500">
-                  <button className="flex items-center space-x-1 hover:text-red-500">
-                    <Heart className="h-4 w-4" />
-                    <span>{comment.likes}</span>
-                  </button>
+                <div className="space-y-4">
+                  <Textarea
+                    placeholder="Share your thoughts..."
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    rows={3}
+                  />
+                  <Button onClick={handleComment} disabled={!commentText.trim()}>
+                    Post Comment
+                  </Button>
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      </section>
+          ) : (
+            <Card className="bg-gray-50">
+              <CardContent className="p-4 text-center">
+                <p className="text-gray-600 mb-4">Join the conversation!</p>
+                <Link to="/login">
+                  <Button>Login to Comment</Button>
+                </Link>
+              </CardContent>
+            </Card>
+          )}
 
-      {/* Related Posts */}
-      <section className="space-y-6">
-        <h2 className="text-2xl font-bold">Related News</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {relatedPosts.map((post) => (
-            <Link key={post.id} to={`/news/${post.id}`}>
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <img 
-                  src={post.image} 
-                  alt={post.title}
-                  className="w-full h-32 object-cover"
-                />
-                <CardHeader>
-                  <Badge className="w-fit bg-blue-600 text-white mb-2">
-                    {post.district}
-                  </Badge>
-                  <CardTitle className="text-lg line-clamp-2 hover:text-blue-600 transition-colors">
-                    {post.title}
-                  </CardTitle>
-                  <p className="text-sm text-gray-600 line-clamp-2">{post.excerpt}</p>
-                </CardHeader>
+          {/* Comments List */}
+          <div className="space-y-4">
+            {comments.map((comment) => (
+              <Card key={comment.id}>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="font-semibold">{comment.author}</h4>
+                    <span className="text-sm text-gray-500">
+                      {formatDate(comment.timestamp)}
+                    </span>
+                  </div>
+                  <p className="text-gray-700 mb-2">{comment.content}</p>
+                  <div className="flex items-center space-x-2 text-sm text-gray-500">
+                    <button className="flex items-center space-x-1 hover:text-red-500">
+                      <Heart className="h-4 w-4" />
+                      <span>{comment.likes}</span>
+                    </button>
+                  </div>
+                </CardContent>
               </Card>
-            </Link>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+
+        {/* Related Posts */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold">Related News</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {relatedPosts.map((post) => (
+              <Link key={post.id} to={`/news/${post.id}`}>
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                  <img 
+                    src={post.image} 
+                    alt={post.title}
+                    className="w-full h-32 object-cover"
+                  />
+                  <CardHeader>
+                    <Badge className="w-fit bg-blue-600 text-white mb-2">
+                      {post.district}
+                    </Badge>
+                    <CardTitle className="text-lg line-clamp-2 hover:text-blue-600 transition-colors">
+                      {post.title}
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 line-clamp-2">{post.excerpt}</p>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      {/* Right Sidebar */}
+      <div className="lg:col-span-1 space-y-6">
+        <TrendingWidget />
+        <SportsWidget />
+        <GoldStockWidget />
+        
+        {/* Advertisement */}
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg">
+              <h3 className="font-bold mb-2">Advertisement</h3>
+              <p className="text-sm">Your ad could be here!</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

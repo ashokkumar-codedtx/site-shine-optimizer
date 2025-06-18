@@ -11,6 +11,7 @@ import {
   Heart, 
   Activity, 
   Settings,
+  Shield,
   Menu,
   LogOut,
   Sun,
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Likes', href: '/admin/likes', icon: Heart },
   { name: 'Activity Logs', href: '/admin/logs', icon: Activity },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
+  { name: 'Access Control', href: '/admin/acl', icon: Shield },
 ];
 
 export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
