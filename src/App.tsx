@@ -9,6 +9,11 @@ import { Layout } from "@/components/Layout";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
+import { PostList } from "./pages/admin/PostList";
+import { UserList } from "./pages/admin/UserList";
+import { CommentsList } from "./pages/admin/CommentsList";
+import { LikesList } from "./pages/admin/LikesList";
+import { ActivityLogs } from "./pages/admin/ActivityLogs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +50,11 @@ const AppRoutes = () => {
             <Layout>
               <Routes>
                 <Route index element={<AdminDashboard />} />
+                <Route path="posts" element={<PostList />} />
+                <Route path="users" element={<UserList />} />
+                <Route path="comments" element={<CommentsList />} />
+                <Route path="likes" element={<LikesList />} />
+                <Route path="logs" element={<ActivityLogs />} />
                 <Route path="*" element={<AdminDashboard />} />
               </Routes>
             </Layout>
