@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -103,67 +104,67 @@ const Index = () => {
       {/* News Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
-          <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-            <div className="relative">
-              <img 
-                src={post.image} 
-                alt={post.title}
-                className="w-full h-48 object-cover"
-              />
-              <Badge className="absolute top-4 left-4 bg-blue-600 text-white">
-                {post.district}
-              </Badge>
-            </div>
-            
-            <CardHeader>
-              <div className="flex flex-wrap gap-1 mb-2">
-                {post.tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              <CardTitle className="line-clamp-2 hover:text-blue-600 transition-colors">
-                {post.title}
-              </CardTitle>
-              <CardDescription className="line-clamp-3">
-                {post.excerpt}
-              </CardDescription>
-            </CardHeader>
-            
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4" />
-                  <span>{formatDate(post.publishedAt)}</span>
-                </div>
-                <span>By {post.author}</span>
+          <Link key={post.id} to={`/news/${post.id}`}>
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="relative">
+                <img 
+                  src={post.image} 
+                  alt={post.title}
+                  className="w-full h-48 object-cover"
+                />
+                <Badge className="absolute top-4 left-4 bg-blue-600 text-white">
+                  {post.district}
+                </Badge>
               </div>
               
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-1">
-                    <Heart className={`h-4 w-4 ${user ? 'cursor-pointer hover:text-red-500' : ''}`} />
-                    <span>{post.likes}</span>
+              <CardHeader>
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {post.tags.map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+                <CardTitle className="line-clamp-2 hover:text-blue-600 transition-colors">
+                  {post.title}
+                </CardTitle>
+                <CardDescription className="line-clamp-3">
+                  {post.excerpt}
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <Clock className="h-4 w-4" />
+                    <span>{formatDate(post.publishedAt)}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>{post.comments}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Eye className="h-4 w-4" />
-                    <span>{post.views}</span>
-                  </div>
+                  <span>By {post.author}</span>
                 </div>
                 
-                {user && (
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-1">
+                      <Heart className={`h-4 w-4 ${user ? 'cursor-pointer hover:text-red-500' : ''}`} />
+                      <span>{post.likes}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <MessageSquare className="h-4 w-4" />
+                      <span>{post.comments}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Eye className="h-4 w-4" />
+                      <span>{post.views}</span>
+                    </div>
+                  </div>
+                  
                   <Button variant="ghost" size="sm">
                     Read More
                   </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
 

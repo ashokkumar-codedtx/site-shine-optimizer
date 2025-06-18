@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { Layout } from "@/components/Layout";
 import Index from "./pages/Index";
+import NewsDetail from "./pages/NewsDetail";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import { PostList } from "./pages/admin/PostList";
@@ -43,6 +44,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
       <Route path="/" element={<Layout><Index /></Layout>} />
+      <Route path="/news/:id" element={<Layout><NewsDetail /></Layout>} />
       <Route 
         path="/admin/*" 
         element={
